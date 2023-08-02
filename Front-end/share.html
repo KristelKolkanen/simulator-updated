@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="share.css">
+<script src="../Back-end/share.js"></script>
+<title>Share</title>
+</head>
+<body>
+    <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v17.0" nonce="L0Deqrh2"></script>
+    <div id="container">
+        <div id="textcontainer">Share your results!</div>
+        <div id="buttoncontainer">
+            <button id="copy" onclick="copyToClipboard()" class="white">Copy Link</button>
+            <input type="hidden" value="https://dlg.tlu.ee/games/interview/" id="linkInput" readonly>
+            <button id="twitter" class="blue" onclick="window.open('https://twitter.com/share?url=https://dlg.tlu.ee/games/interview/', '_blank')">Twitter</button>
+            <button id="facebook" class="blue" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdlg.tlu.ee%2Fgames%2Finterview%2F&amp;src=sdkpreparse', '_blank')">Facebook</button>
+            <button id="whatsapp" class="green" onclick="window.open('https://wa.me/?text=https://dlg.tlu.ee/games/interview/', '_blank')">WhatsApp</button>
+        </div>
+    <div id="backbtn">
+        <a href="../Back-end/edetabel.php" id="back">Back</a>
+    </div>
+</div>
+
+</body>
+</html>
+
+<!-- https://dlg.tlu.ee/games/interview/ -->

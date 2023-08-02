@@ -1,0 +1,82 @@
+.styled-table {
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-size: 0.9em;
+    font-family: Verdana, sans-serif;
+    min-width: 45em;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #84A98C;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 0.75em 0.75em;
+}
+
+.styled-table tbody tr {
+    border-bottom: 0.05em solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+	background-color: #CAD2C5;
+}
+
+.styled-table tbody tr:nth-of-type(odd) {
+	color: #fff;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 0.5em solid #84A98C;
+}
+
+input{
+    background-color: rgba(132, 169, 140, 0.6);
+    border-color: #84A98C;
+    border-radius: 1em;
+    border-style: solid;
+    cursor: pointer;
+    color: white;
+    width: 5em;
+    height: 2.5em;
+    margin: 0;
+}
+
+#btn_group{
+    margin-top: 1em;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+    width: auto;
+}
+
+input:hover{
+    color: #fff;
+    border-color: #38534d;
+    background-color: rgba(82, 121, 111,0.8)
+}
+
+tbody{
+    display: block;
+    height: 40em;
+    overflow: auto;
+    scrollbar-width: 0;
+    scrollbar-color: transparent transparent;
+}
+
+thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+table{
+    width: 100vh;
+}
+

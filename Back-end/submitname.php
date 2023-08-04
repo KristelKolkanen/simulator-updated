@@ -47,6 +47,15 @@ if (isset($_POST['name_input'], $_POST['points'])) {
     echo ""; //"Name and points not set."
 }
 
+$results_query = "SELECT result_id, result_name FROM User_Result WHERE deleted = 0 ";
+$results_result = $conn->query($results_query);
+
+if($results_result->num_rows > 0){
+    while ($row = $results_result->fetch_assoc()) {
+        $previous_name = $row["result_name"];
+}
+}
+
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -63,7 +72,7 @@ $conn->close();
         <p>Submit your name for the leaderboard</p>
         <form method="POST" id="myName" action="submitname.php">
             <label for="name_input"></label>
-            <input type="text" id="name_input" name="name_input" placeholder="Your name" required>
+            <input type="text" id="name_input" name="name_input" placeholder="Your name" value="<?php echo htmlspecialchars($previous_name); ?>"required>
             <input type="hidden" name="points" value="<?php echo $points; ?>">
             <button form="myName" type="submit" id="name_result" name="form_submit">SUBMIT</button>
             <a href="results.php"><button id="skip">BACK</button></a>

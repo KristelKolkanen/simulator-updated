@@ -48,21 +48,11 @@ form{
     justify-content: center;
 }
 
-/* label {
-    color: white;
-    text-align: left;
-    padding: 10px;
-    line-height: 32px;
-    position: relative;
-    grid-column: 1/2;
-    align-items: end;
-} */
-
 input {
     padding: 0.9em;
     border-radius: 1em;
     border: none;
-    width: 10em;
+    width: 20.5em;
     background-color:  rgba(255,255,255,0.7);
     position: relative;
     grid-column: 3/2;

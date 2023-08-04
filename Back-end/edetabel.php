@@ -15,7 +15,6 @@
                         <th>Rank</th>
                         <th>Name</th>
                         <th>Score</th>
-                        <th>Time</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +40,6 @@
                             		echo "<td>" . $rank . "</td>";
                             		echo "<td>" . $row["result_name"] . "</td>";
                             		echo "<td>" . $row["result_score"] . "</td>";
-                            		echo "<td>" . $row["result_time"] . "</td>";
                             		echo "</tr>";
                             		$rank++;
                         }

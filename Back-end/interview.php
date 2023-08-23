@@ -7,9 +7,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$start_time = time();
-$_SESSION['start_time'] = $start_time;
-
 $new_form_id = $_SESSION['form_id'] ?? "";
 $form_name = $_SESSION['form_name'] ?? "";
 $form_age = $_SESSION['form_age'] ?? "";
@@ -27,8 +24,10 @@ if (isset($_GET['form_id'])) {
 
 function getQuestion($questionId){
     global $conn;
-    $sql = "SELECT `question_text` FROM `Question` WHERE `question_id` = $questionId";
-    $result = $conn->query($sql);
+    $stmt = $conn->prepare("SELECT `question_text` FROM `Question` WHERE `question_id` = ?");
+    $stmt->bind_param("i", $questionId);
+    $stmt->execute();
+    $result = $stmt->get_result();
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         return $row["question_text"];
@@ -96,14 +95,11 @@ roundScore($points);
 
 //Insert data into User_Result table if answer_end is 1
 if (isset($_SESSION['form_id']) && isset($_POST['points']) && $answers[0]['answer_end'] == 1) {
+    global $conn;
     $form_id = $_SESSION['form_id'];
     $points = $_POST['points'];
-    $sql = "INSERT INTO `User_Result` (`Form_form_id`, `result_score`) VALUES ('$form_id', '$points')";
-    if ($conn->query($sql) === TRUE) {
-        echo "";
-    } else {
-        echo "Error inserting data: " . $conn->error;
-    }
+    $stmt = $conn->prepare("INSERT INTO `User_Result` (`Form_form_id`, `result_score`) VALUES (?, ?)");
+    $stmt->bind_param("ii", $form_id, $points);
 }
 ?>
 <!DOCTYPE html>
@@ -111,13 +107,9 @@ if (isset($_SESSION['form_id']) && isset($_POST['points']) && $answers[0]['answe
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../Front-end/kysimus.css">
-	  <!-- <script src="timer.js" defer></script> -->
 </head>
 <body>
     <div class="pagecontainer">
-<!--         <div class="container1">
-            <div class="time" id="timer"></div>
-        </div> -->
         <img src="../pics/unmute_50.png" alt="mute" class="mute" id="mute" onclick="toggleMute()">
         <div class="container2">
             <div class="kysimused">
@@ -207,26 +199,6 @@ if (isset($_SESSION['form_id']) && isset($_POST['points']) && $answers[0]['answe
     </div>
 </div>
 </body>
-	<?php
-        /* $start_time = $_SESSION['start_time'] ?? 0; // Retrieve the start time from session*/
-        $end_time = $_SESSION['end_time'] ?? 0;
-         // Retrieve the end time from session 
-
-        if ($start_time && $end_time) {
-            $time_diff = $end_time - $start_time;
-            $time_diff = $time_diff * (-1);
-            // Calculate the difference in minutes
-            $_SESSION['time_diff'] = $time_diff;
-
-            $time_diff_minutes = floor($time_diff / 60);
-            $_SESSION['time_diff_minutes'] = $time_diff_minutes;
-
-            //echo "Time difference in seconds: " . $time_diff . " seconds<br>";
-            //echo "Time difference in minutes: " . $time_diff_minutes . " minutes<br>";
-        } else {
-            //echo "Start and end times are not set.";
-        }
-    ?>
 <script>
 var isMuted = false;
 var muteBtn = document.getElementById("mute");

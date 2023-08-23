@@ -11,15 +11,11 @@ if ($conn->connect_error) {
 }
 if (isset($_POST['name_input'], $_POST['points'])) {
     $name = $_POST['name_input'];
-    $new_form_id = $_SESSION['form_id'] ?? "";
-    $points = $_SESSION['points'] ?? "";
 
-    $name = $conn->real_escape_string($name);
-    $new_form_id = $conn->real_escape_string($new_form_id);
-    $points = $conn->real_escape_string($points);
-
-    $checkSql = "SELECT * FROM User_Result WHERE Form_form_id = '$new_form_id'";
-    $result = $conn->query($checkSql);
+    $stmt = $conn->prepare("SELECT * FROM User_Result WHERE Form_form_id = ?");
+    $stmt->bind_param("s", $new_form_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result === false) {
         echo "Error executing query: " . $conn->error;
@@ -27,20 +23,26 @@ if (isset($_POST['name_input'], $_POST['points'])) {
     }
 
     if ($result->num_rows > 0) {
-        $updateSql = "UPDATE User_Result SET result_name = '$name', result_score = '$points' WHERE Form_form_id = '$new_form_id'";
-        if ($conn->query($updateSql) === TRUE) {
+        $stmt = $conn->prepare("UPDATE User_Result SET result_name = ?, result_score = ? WHERE Form_form_id = ?");
+        $stmt->bind_param("sss", $name, $points, $new_form_id);
+
+        if ($stmt->execute()) {
             echo "Name updated successfully.";
         } else {
-            echo "Error updating name: " . $conn->error;
+            echo "Error updating name: " . $stmt->error;
         }
     } else {
-        $insertSql = "INSERT INTO User_Result (result_name, Form_form_id, result_score) VALUES ('$name', '$new_form_id', '$points')";
-        if ($conn->query($insertSql) === TRUE) {
+        $stmt = $conn->prepare("INSERT INTO User_Result (result_name, Form_form_id, result_score) VALUES (?, ?, ?)");
+        $stmt->bind_param("ssi", $name, $new_form_id, $points);
+
+        if ($stmt->execute()) {
             echo "Name inserted successfully.";
         } else {
-            echo "Error inserting name: " . $conn->error;
+            echo "Error inserting name: " . $stmt->error;
         }
-    }  
+    }
+
+    $stmt->close();
     header("Location: edetabel.php");
     exit;
 } else {

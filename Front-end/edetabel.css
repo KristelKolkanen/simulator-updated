@@ -12,13 +12,13 @@ body {
 
 .pagecontainer {
 	display: grid;
-	grid-template-columns: 1fr 5fr 1fr;
+	grid-template-columns: 5fr 5fr 5fr;
 	grid-template-rows: 3em auto 3em;
 	width: 100%;
 }
 
 .maincontent {
-	grid-column: 2 / 3;
+	grid-column: 1 / 3;
 	grid-row: 2 / 3;
 	display: flex;
 	flex-direction: column;
@@ -125,27 +125,39 @@ a {
 	text-decoration: none;
 }
 
+#delete-all{
+	margin-left: 5vh;
+}
+
 /* Styles for smaller screens (e.g., phones) */
 
 @media only screen and (max-width: 600px) {
 	body {
 		height: 100%;
+		background-image: url("../pics/taust_other.jpg");
+		height: 100vh;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		position: relative;
 	}
 
 	th, td{
 		width: 1em;
 	}
 	.maincontent {
-        /*grid-column: 1 / 4;  Spanning all three columns for .maincontent in small screens */
+        grid-column: 1 / 4;  
 		display: flex;
 		flex-direction: column;
 		justify-content:flex-start;
 		align-items: center;
     }
-    
+    html{
+		background-color: #545b5c;
+	}
     .sidebar {
-        grid-row: 3 / 4; /* Placing .sidebar in the third row */
-        grid-column: 1 / 4; /* Spanning all three columns for .sidebar in small screens */
+        grid-row: 3 / 4; 
+        grid-column: 1 / 4; 
 	}
     
     .button-group {

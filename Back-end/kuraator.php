@@ -24,23 +24,19 @@ require_once "../config_dlg.php";
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    $stmt = $conn->prepare("SELECT AVG(result_score), AVG(result_time) FROM User_Result");
+    $stmt = $conn->prepare("SELECT AVG(result_score) FROM User_Result");
 	echo $conn->error;
-    $stmt->bind_result($avg_score_db, $avg_time_db);
+    $stmt->bind_result($avg_score_db);
     $stmt->execute();
 	echo $stmt->error;
 
     $analytics_score = null; //average score
-    $analytics_time = null; //average time
 
     if($stmt->fetch()){
         $analytics_score = $avg_score_db;
-        $analytics_time = $avg_time_db;
     }
     $stmt->close();
     $conn->close();
-
-    $analytics_time = round($analytics_time / 60);
 
     //analytics, amount of participants
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -94,14 +90,13 @@ require_once "../config_dlg.php";
     <div class="pagecontainer">
         <div class="maincontent">
             <div class="header"><h1>LEADERBOARD</h1></div>
+            <div id="answer-button"><button type="submit" value="Delete">Delete All</button></div>
             <table class="styled-table">
                 <thead>
                     <tr>
                         <th>Rank</th>
                         <th>Name</th>
                         <th>Score</th>
-                        <th>Time</th>
-                        <!--<th>ID</th>-->
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -120,8 +115,8 @@ require_once "../config_dlg.php";
                             die("Connection failed: " . $conn->connect_error);
                         }
 
-                        $stmt = $conn->prepare("SELECT result_id, result_score, result_time, result_name, deleted FROM User_Result WHERE deleted = 0 ORDER BY result_score DESC, result_time ASC LIMIT 10");
-                        $stmt->bind_result($result_id, $result_score, $result_time, $result_name, $deleted);
+                        $stmt = $conn->prepare("SELECT result_id, result_score, result_name, deleted FROM User_Result WHERE deleted = 0 ORDER BY result_score DESC LIMIT 10");
+                        $stmt->bind_result($result_id, $result_score, $result_name, $deleted);
 
                         // Display the results
                         if ($stmt->execute()) {
@@ -131,7 +126,6 @@ require_once "../config_dlg.php";
                                 echo "<td>" . $rank . "</td>";
                                 echo "<td>" . $result_name . "</td>";
                                 echo "<td>" . $result_score . "</td>";
-                                echo "<td>" . $result_time . "</td>";
                                 //echo "<td>" . $result_id . "</td>";
                                 echo '<td id="btn_group"><form method="POST"><input type="hidden" name="to_delete" value="' .$result_id  .'"><input type="submit" id="selected_id_' .$result_id .'" name="deleting" value="Delete"></form></td>' ."\n";
                                 echo "</tr> \n";
@@ -141,7 +135,6 @@ require_once "../config_dlg.php";
                             echo "<tr><td colspan='4'>No results found.</td></tr>";
                         }
 
-                        // Close the database connection
                         $conn->close();
                     ?>
                 </tbody>
@@ -151,7 +144,6 @@ require_once "../config_dlg.php";
             <div class="keskmine_vanus container"><p>Osalejate keskmine vanus:</p><br><?php echo floor($analytics_age); ?></div>
             <div class="osalejad_kokku container"><p>Osalejaid kokku:</p><br><?php echo $analytics_participants; ?></div>
             <div class="keskmine_tulemus container"><p>Keskmine tulemus:</p><br><?php echo floor($analytics_score); ?></div>
-            <div class="keskmine_aeg container"><p>Keskmine aeg:</p><br><?php echo $analytics_time; ?><p>minutit</p></div>
         </div>    
     </div>
 </body>

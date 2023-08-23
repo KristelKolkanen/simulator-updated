@@ -40,7 +40,7 @@ if (isset($_POST['name_input'], $_POST['points'])) {
         } else {
             echo "Error inserting name: " . $conn->error;
         }
-    }
+    }  
     header("Location: edetabel.php");
     exit;
 } else {

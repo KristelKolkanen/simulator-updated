@@ -5,7 +5,6 @@ require_once "../config_dlg.php";
     if(isset($_POST["deleting"])){
         if(isset($_POST["to_delete"]) && !empty($_POST["to_delete"])){
              $conn = new mysqli($servername, $username, $password, $dbname);
-                  // Check for connection errors
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
@@ -16,6 +15,19 @@ require_once "../config_dlg.php";
             $stmt->close();
             $conn->close();
         }
+    }
+
+    // Delete all results from DB
+    if(isset($_POST["delete_all"]) && !empty($_POST["delete_all"])){
+            $conn = new mysqli($servername, $username, $password, $dbname);
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $stmt=$conn->prepare("DELETE FROM User_Result");
+        $stmt=$conn->prepare("DELETE FROM Form");
+        $stmt->execute();
+        $stmt->close();
+        $conn->close();
     }
 
     //analytics, average result, average time
@@ -90,7 +102,6 @@ require_once "../config_dlg.php";
     <div class="pagecontainer">
         <div class="maincontent">
             <div class="header"><h1>LEADERBOARD</h1></div>
-            <div id="answer-button"><button type="submit" value="Delete">Delete All</button></div>
             <table class="styled-table">
                 <thead>
                     <tr>
@@ -102,15 +113,7 @@ require_once "../config_dlg.php";
                 </thead>
                 <tbody>
                     <?php
-                        $servername = "localhost";
-                        $username = "if22";
-                        $password = "if22pass";
-                        $dbname = "if22_DLGsimulaator";
-
-                        // Connect to the database
                         $conn = new mysqli($servername, $username, $password, $dbname);
-
-                        // Check for connection errors
                         if ($conn->connect_error) {
                             die("Connection failed: " . $conn->connect_error);
                         }
@@ -126,7 +129,6 @@ require_once "../config_dlg.php";
                                 echo "<td>" . $rank . "</td>";
                                 echo "<td>" . $result_name . "</td>";
                                 echo "<td>" . $result_score . "</td>";
-                                //echo "<td>" . $result_id . "</td>";
                                 echo '<td id="btn_group"><form method="POST"><input type="hidden" name="to_delete" value="' .$result_id  .'"><input type="submit" id="selected_id_' .$result_id .'" name="deleting" value="Delete"></form></td>' ."\n";
                                 echo "</tr> \n";
                                 $rank++;
@@ -141,9 +143,10 @@ require_once "../config_dlg.php";
             </table>
         </div>
         <div class="sidecontent">
-            <div class="keskmine_vanus container"><p>Osalejate keskmine vanus:</p><br><?php echo floor($analytics_age); ?></div>
-            <div class="osalejad_kokku container"><p>Osalejaid kokku:</p><br><?php echo $analytics_participants; ?></div>
-            <div class="keskmine_tulemus container"><p>Keskmine tulemus:</p><br><?php echo floor($analytics_score); ?></div>
+            <div id="delete-all"><form method="POST"><input type="submit" id="answer-button" name="delete_all" value="Delete All"/></form></div>
+            <div class="keskmine_vanus container"><p>Average age of participants:</p><br><?php echo floor($analytics_age); ?></div>
+            <div class="osalejad_kokku container"><p>Total participants:</p><br><?php echo $analytics_participants; ?></div>
+            <div class="keskmine_tulemus container"><p>Average score:</p><br><?php echo floor($analytics_score); ?></div>
         </div>    
     </div>
 </body>

@@ -4,11 +4,11 @@ session_start();
 $new_form_id = $_SESSION['form_id'] ?? "";
 $final_time = $_SESSION['time_diff'] ?? "";
 
-$final_time_seconds = intval( $final_time % 60);
+/* $final_time_seconds = intval( $final_time % 60);
 $final_time_minutes = intval( $final_time / 60);
 
 $final_time_minutes = $final_time_minutes < 10 ? "0" . $final_time_minutes : $final_time_minutes;
-$final_time_seconds = $final_time_seconds < 10 ? "0" . $final_time_seconds : $final_time_seconds;
+$final_time_seconds = $final_time_seconds < 10 ? "0" . $final_time_seconds : $final_time_seconds; */
 
 if (isset($_POST['points'])) {
     $points = $_POST['points'];
@@ -47,7 +47,7 @@ if (isset($_SESSION['time_diff']) && isset($_SESSION['form_id'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Front-end/results.css">
-    <script src="timer.js"></script>
+    
     <title>DLG sisseastumisintervjuu simulaator</title>
 </head>
 <body>
@@ -75,6 +75,7 @@ if (isset($_SESSION['time_diff']) && isset($_SESSION['form_id'])) {
                 <button type="submit" class="submit">Share on leaderboard</button>
             </form>
         </div>
+        
     </div>
 </body>
 </html>

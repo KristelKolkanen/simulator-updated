@@ -6,6 +6,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
 $start_time = time();
 $_SESSION['start_time'] = $start_time;
 
@@ -105,19 +106,18 @@ if (isset($_SESSION['form_id']) && isset($_POST['points']) && $answers[0]['answe
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../Front-end/kysimus.css">
-	  <script src="timer.js" defer></script>
+	  <!-- <script src="timer.js" defer></script> -->
 </head>
 <body>
     <div class="pagecontainer">
-        <div class="container1">
+<!--         <div class="container1">
             <div class="time" id="timer"></div>
-        </div>
+        </div> -->
         <img src="../pics/unmute_50.png" alt="mute" class="mute" id="mute" onclick="toggleMute()">
         <div class="container2">
             <div class="kysimused">

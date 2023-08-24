@@ -10,14 +10,16 @@ body {
 
 #textcontainer {
     color: white;
-    grid-row: 1/2;
     text-align: center;
+    margin-bottom: 10px;
 }
 
-#container{
-    background-color: rgba(53,79,82,0.6);
-    display: grid;
-    grid-template-rows: 3vh auto 2vh;
+#container {
+    background-color: rgba(53, 79, 82, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: fit-content;
     padding: 15px;
     padding-bottom: 30px;
@@ -25,70 +27,65 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: fit-content;
     border-radius: 10px;
 }
 
 #buttoncontainer {
-    grid-row: 2/3;
     display: grid;
-    grid-template-columns: 20vh 20vh;
-    grid-gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
 }
 
 #backbtn {
-    grid-row: 3/4;
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-#back{
+#back {
     color: #fff;
     background-color: rgba(255, 243, 131, 0.7);
-    border-color: #ffde79;
+    border: 1px solid #ffde79;
     text-decoration: none;
-    display: inline-block;
     padding: 8px 16px;
     border-radius: 10px;
 }
 
-#back:hover{
-    border-color: #f5d26a;
+#back:hover {
     background-color: rgba(240, 209, 115, 0.7);
+    border-color: #f5d26a;
     color: #fff;
 }
 
-button{
+button {
     border-radius: 10px;
-    border: 0;
+    border: 1px solid transparent;
     padding: 8px;
     min-height: 35px;
+    flex: 1;
 }
 
 .blue {
     background-color: rgba(135, 207, 235, 0.7);
-    border-color: skyblue;
-    border-style: solid;
+    border: 1px solid skyblue;
     color: white;
 }
 
 .green {
     background-color: rgba(144, 238, 144, 0.7);
-    border-color: lightgreen;
-    border-style: solid;
+    border: 1px solid lightgreen;
     color: white;
 }
 
 .blue:hover {
     background-color: rgba(29, 179, 238, 0.7);
     border-color: skyblue;
-    border-style: solid;
 }
 
 .green:hover {
     background-color: rgba(24, 235, 24, 0.7);
     border-color: lightgreen;
-    border-style: solid;
 }

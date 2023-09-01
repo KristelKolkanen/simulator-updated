@@ -39,14 +39,17 @@ function getQuestion($questionId){
 function getAnswers($questionId){
     global $conn;
     $answers_list = [];
-    $stmt = $conn->prepare("SELECT answer_text, next_question_id, answer_score , answer_end FROM Answer WHERE Question_question_id = ?");
+    $stmt = $conn->prepare("SELECT answer_id, answer_text, next_question_id, answer_score , answer_end FROM Answer WHERE Question_question_id = ?");
     echo $conn->error;
     $stmt->bind_param("i", $questionId);
-    $stmt->bind_result($answer_text_from_db, $next_question_id_from_db, $answer_score_from_db, $answer_end_from_db);
+    $stmt->bind_result($answer_id_from_db, $answer_text_from_db, $next_question_id_from_db, $answer_score_from_db, $answer_end_from_db);
     $stmt->execute();
+
     echo $stmt->error;
+
     while($stmt->fetch()){
          $answers_list[] = [
+                "answer_id" => $answer_id_from_db,
                 "answer_text" => $answer_text_from_db,
                 "next_question_id" => $next_question_id_from_db,
                 "answer_score" => $answer_score_from_db,
@@ -142,12 +145,15 @@ if (isset($_SESSION['form_id']) && isset($_POST['points']) && $answers[0]['answe
 </div>
     <div class="table">
         <div class="button-group">
-            <?php foreach ($answers as $answer): ?>
-                <?php
+            <?php 
+            $randomAnswers = array_rand($answers, 4);
+             foreach ($randomAnswers as $answerIndex):
+                    $answer = $answers[$answerIndex];
                     $next_question_id = $answer['next_question_id'];
                     $answer_score = $answer['answer_score'];
                     $next_points = $points + $answer_score; // Increase points by answer score
                     $answer_text = $answer['answer_text'];
+
                     roundScore($next_points);
 
                     if ($_SESSION['form_name'] !== '') {
@@ -183,16 +189,15 @@ if (isset($_SESSION['form_id']) && isset($_POST['points']) && $answers[0]['answe
                 <?php if ($answer['answer_end'] == 1 && !strpos($answer_text, '[name]') && !strpos($answer_text, '[age]') && !strpos($answer_text, '[country]') && !strpos($answer_text, '[education]') && !strpos($answer_text, '[work]') && !strpos($answer_text, '[hobby]') && !strpos($answer_text, '[X]')): ?>
                     <form action="results.php" method="POST">
                         <input type="hidden" name="points" value="<?php echo $next_points; ?>">
-                        <button class="answer-button" type="submit"><?php echo $answer_text; ?></button>
+                        <button class="answer-button" type="submit" data-answer-id="<?php echo $answer['answer_id']; ?>"><?php echo $answer_text; ?></button>
                     </form>
                 <?php elseif (!strpos($answer_text, '[name]') && !strpos($answer_text, '[age]') && !strpos($answer_text, '[country]') && !strpos($answer_text, '[education]') && !strpos($answer_text, '[work]') && !strpos($answer_text, '[hobby]') && !strpos($answer_text, '[X]')): ?>
                     <form action="interview.php" method="POST">
                         <input type="hidden" name="questionId" value="<?php echo $next_question_id; ?>">
                         <input type="hidden" name="points" value="<?php echo $next_points; ?>">
-                        <button class="answer-button" type="submit"><?php echo $answer_text; ?></button>
+                        <button class="answer-button" type="submit" data-answer-id="<?php echo $answer['answer_id']; ?>"><?php echo $answer_text; ?></button>
                     </form>
-                <?php $end_time = time();
-                    $_SESSION['end_time'] = $end_time;?>
+
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>

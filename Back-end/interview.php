@@ -146,7 +146,7 @@ if (isset($_SESSION['form_id']) && isset($_POST['points']) && $answers[0]['answe
     <div class="table">
         <div class="button-group">
             <?php 
-            $randomAnswers = array_rand($answers, 4);
+            $randomAnswers = (array) array_rand($answers, min(4, count($answers)));
              foreach ($randomAnswers as $answerIndex):
                     $answer = $answers[$answerIndex];
                     $next_question_id = $answer['next_question_id'];
